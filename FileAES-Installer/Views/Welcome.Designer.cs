@@ -122,7 +122,7 @@ namespace FileAES_Installer.Views
             this.briefWalkthrough.Name = "briefWalkthrough";
             this.briefWalkthrough.Size = new System.Drawing.Size(315, 219);
             this.briefWalkthrough.TabIndex = 1;
-            this.briefWalkthrough.Text = "Example placeholder text";
+            this.briefWalkthrough.Text = "Please click \"Next\" to proceed with the installation.";
             // 
             // Welcome
             // 

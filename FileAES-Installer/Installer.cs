@@ -339,6 +339,8 @@ namespace FileAES_Installer
                     AppendToInstallLog("Finished installation of 'FileAES: CLI'!");
                 }
                 DeleteUpdater();
+
+                AppendToInstallLog("Completed installation! Please click 'Next'");
             });
             mainInstallThread.Start();
 

@@ -34,6 +34,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,10 +60,55 @@
     <Compile Include="Installer.Designer.cs">
       <DependentUpon>Installer.cs</DependentUpon>
     </Compile>
+    <Compile Include="LegacyInstaller.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LegacyInstaller.Designer.cs">
+      <DependentUpon>LegacyInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Completed.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Completed.Designer.cs">
+      <DependentUpon>Completed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Error.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Error.Designer.cs">
+      <DependentUpon>Error.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Install.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Install.Designer.cs">
+      <DependentUpon>Install.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Licence.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Licence.Designer.cs">
+      <DependentUpon>Licence.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Options.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Welcome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Welcome.Designer.cs">
+      <DependentUpon>Welcome.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Installer.resx">
       <DependentUpon>Installer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LegacyInstaller.resx">
+      <DependentUpon>LegacyInstaller.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -72,6 +120,24 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\Completed.resx">
+      <DependentUpon>Completed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Error.resx">
+      <DependentUpon>Error.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Install.resx">
+      <DependentUpon>Install.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Licence.resx">
+      <DependentUpon>Licence.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Options.resx">
+      <DependentUpon>Options.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Welcome.resx">
+      <DependentUpon>Welcome.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -88,6 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

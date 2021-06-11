@@ -245,7 +245,7 @@ namespace FileAES_Installer
 
                 if (toolsToInstall.Contains("FAES_GUI"))
                 {
-                    AppendToInstallLog("Starting install of FileAES");
+                    AppendToInstallLog("Starting install of 'FileAES'.");
 
                     Thread installThread = new Thread(() =>
                     {
@@ -278,11 +278,11 @@ namespace FileAES_Installer
                     while (installThread.IsAlive)
                         Thread.Sleep(100);
 
-                    AppendToInstallLog("Finished installation of FileAES");
+                    AppendToInstallLog("Finished installation of 'FileAES'!");
                 }
                 if (toolsToInstall.Contains("FAES_LEGACY"))
                 {
-                    AppendToInstallLog("Starting install of FileAES: Legacy");
+                    AppendToInstallLog("Starting install of 'FileAES: Legacy'.");
 
                     Thread installThread = new Thread(() =>
                     {
@@ -307,11 +307,11 @@ namespace FileAES_Installer
                     while (installThread.IsAlive)
                         Thread.Sleep(100);
 
-                    AppendToInstallLog("Finished installation of FileAES: Legacy");
+                    AppendToInstallLog("Finished installation of 'FileAES: Legacy'!");
                 }
                 if (toolsToInstall.Contains("FAES_CLI"))
                 {
-                    AppendToInstallLog("Starting install of FileAES: CLI");
+                    AppendToInstallLog("Starting install of 'FileAES: CLI'.");
 
                     Thread installThread = new Thread(() =>
                     {
@@ -336,7 +336,7 @@ namespace FileAES_Installer
                     while (installThread.IsAlive)
                         Thread.Sleep(100);
 
-                    AppendToInstallLog("Finished installation of FileAES: CLI");
+                    AppendToInstallLog("Finished installation of 'FileAES: CLI'!");
                 }
                 DeleteUpdater();
             });

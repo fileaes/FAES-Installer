@@ -5,7 +5,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -20,6 +19,8 @@ namespace FileAES_Installer
         private bool _skipCloseCheck;
         private bool _proceedToErrorView;
 
+        private Func<bool, bool> _runOnClose;
+
         public Installer()
         {
             InitializeComponent();
@@ -30,9 +31,14 @@ namespace FileAES_Installer
             InternetCheck();
         }
 
+        public void SetRunOnClose(Func<bool, bool> run)
+        {
+            _runOnClose = run;
+        }
+
         private void InternetCheck()
         {
-            if (!DoInternetCheck())
+            if (!Utils.DoInternetCheck())
             {
                 if (MessageBox.Show("Could not connect to the update server!\r\n\r\nPlease ensure you have an internet connection.", "FileAES: Installer | Connection Error", MessageBoxButtons.RetryCancel) == DialogResult.Retry)
                     InternetCheck();
@@ -190,24 +196,6 @@ namespace FileAES_Installer
             }
         }
 
-        private bool DoInternetCheck()
-        {
-            try
-            {
-                Ping myPing = new Ping();
-                String host = "api.mullak99.co.uk";
-                byte[] buffer = new byte[32];
-                int timeout = 1000;
-                PingOptions pingOptions = new PingOptions();
-                PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
-                return reply != null && reply.Status == IPStatus.Success;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
         private string GetVerboseString()
         {
             if (Program.GetVerbose())
@@ -288,12 +276,20 @@ namespace FileAES_Installer
                     {
                         string path = Path.Combine(optionsPanel.GetInstallPath(), "FileAES-Legacy");
 
-                        var p = new Process();
-                        p.StartInfo.FileName = updaterPath;
-                        p.StartInfo.Arguments = String.Format("--directory \"{0}\" --tool faes_legacy --preserve --branch {1} --fullinstall {2} {3}", path, branch, optionsPanel.CalculateFullInstallParams("FAES_LEGACY"), GetVerboseString());
-                        p.StartInfo.UseShellExecute = false;
-                        p.StartInfo.CreateNoWindow = true;
-                        p.StartInfo.RedirectStandardOutput = true;
+                        var p = new Process
+                        {
+                            StartInfo =
+                            {
+                                FileName = updaterPath,
+                                Arguments = String.Format(
+                                    "--directory \"{0}\" --tool faes_legacy --preserve --branch {1} --fullinstall {2} {3}",
+                                    path, branch, optionsPanel.CalculateFullInstallParams("FAES_LEGACY"),
+                                    GetVerboseString()),
+                                UseShellExecute = false,
+                                CreateNoWindow = true,
+                                RedirectStandardOutput = true
+                            }
+                        };
                         p.OutputDataReceived += SortOutputHandler;
                         p.Start();
 
@@ -317,12 +313,20 @@ namespace FileAES_Installer
                     {
                         string path = Path.Combine(optionsPanel.GetInstallPath(), "FileAES-CLI");
 
-                        var p = new Process();
-                        p.StartInfo.FileName = updaterPath;
-                        p.StartInfo.Arguments = String.Format("--directory \"{0}\" --tool faes_cli --preserve --branch {1} --fullinstall {2} {3}", path, branch, optionsPanel.CalculateFullInstallParams("FAES_CLI"), GetVerboseString());
-                        p.StartInfo.UseShellExecute = false;
-                        p.StartInfo.CreateNoWindow = true;
-                        p.StartInfo.RedirectStandardOutput = true;
+                        var p = new Process
+                        {
+                            StartInfo =
+                            {
+                                FileName = updaterPath,
+                                Arguments = String.Format(
+                                    "--directory \"{0}\" --tool faes_cli --preserve --branch {1} --fullinstall {2} {3}",
+                                    path, branch, optionsPanel.CalculateFullInstallParams("FAES_CLI"),
+                                    GetVerboseString()),
+                                UseShellExecute = false,
+                                CreateNoWindow = true,
+                                RedirectStandardOutput = true
+                            }
+                        };
                         p.OutputDataReceived += SortOutputHandler;
                         p.Start();
 
@@ -470,19 +474,33 @@ namespace FileAES_Installer
 
                         if (InstallTools(updaterPath))
                         {
+                            _skipCloseCheck = true;
                             BeginInvoke(new MethodInvoker(() =>
                             {
                                 nextButton.Text = "Next >";
                             }));
                         }
                         else
+                        {
+                            _skipCloseCheck = true;
+                            BeginInvoke(new MethodInvoker(() =>
+                            {
+                                nextButton.Text = "Next >";
+                            }));
                             Error("An installation error occurred!");
+                        }
                     }
                     else
+                    {
+                        _skipCloseCheck = true;
                         Error("Could not download updater!");
+                    }
 
-                    nextButton.Enabled = true;
-                    backButton.Enabled = false;
+                    BeginInvoke(new MethodInvoker(() =>
+                    {
+                        nextButton.Enabled = true;
+                        backButton.Enabled = false;
+                    }));
                 });
                 installHandlerThread.Start();
             }
@@ -511,8 +529,11 @@ namespace FileAES_Installer
 
             if (e.CloseReason == CloseReason.WindowsShutDown) return;
 
-            if (_currentView < 4 && MessageBox.Show("Are you sure you want to exit setup?", "Exit", MessageBoxButtons.YesNo) != DialogResult.Yes || _skipCloseCheck)
-                e.Cancel = true;
+            if (!_skipCloseCheck)
+                if (MessageBox.Show("Are you sure you want to exit the installer?", "Exit", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    e.Cancel = true;
+
+            _runOnClose?.Invoke(true);
         }
     }
 }

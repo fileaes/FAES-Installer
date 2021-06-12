@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
@@ -7,13 +8,13 @@ namespace FileAES_Installer
 {
     public static class Program
     {
-        private const string devAppendTag = "DEV210611-1";
+        private const string devAppendTag = "DEV210612-1";
         private const string betaAppendTag = "";
 
         private static bool _verbose;
         private static string _updaterPath;
-        private static bool _useLegacyInstaller;
         private static string _updaterBranch = "stable";
+        private static bool _uninstall;
 
         static void Main(string[] args)
         {
@@ -25,17 +26,36 @@ namespace FileAES_Installer
                 strippedArg = strippedArg.TrimStart('-', '/', '\\');
 
                 if (strippedArg == "verbose" || strippedArg == "v" ||strippedArg == "debug") _verbose = true;
-                else if ((strippedArg == "faesupdater" || strippedArg == "updater") && args.Length > i + 1 && !String.IsNullOrEmpty(args[i + 1])) _updaterPath = args[i + 1];
-                else if ((strippedArg == "updaterbranch" || strippedArg == "branch") && args.Length > i + 1 && !String.IsNullOrEmpty(args[i + 1])) _updaterBranch = args[i + 1];
-                else if (strippedArg == "legacyinstaller" || strippedArg == "legacy") _useLegacyInstaller = true;
+                else if ((strippedArg == "faesupdater" || strippedArg == "updater") && args.Length > i + 1 && !String.IsNullOrEmpty(args[i + 1]))
+                {
+                    _updaterPath = args[i + 1];
+                    i++;
+                }
+                else if ((strippedArg == "updaterbranch" || strippedArg == "branch") && args.Length > i + 1 &&
+                         !String.IsNullOrEmpty(args[i + 1]))
+                {
+                    _updaterBranch = args[i + 1];
+                    i++;
+                }
+                else if (strippedArg == "uninstall" || strippedArg == "uninstaller") _uninstall = true;
             }
+
+            Utils.GetSoftwareFilePaths(out List<string> toolNames);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            if (_useLegacyInstaller)
-                Application.Run(new LegacyInstaller());
+
+            if (toolNames != null && toolNames.Count > 0)
+            {
+                Application.Run(new Setup());
+            }
             else
-                Application.Run(new Installer());
+            {
+                if (_uninstall)
+                    Application.Run(new Uninstaller());
+                else
+                    Application.Run(new Installer());
+            }
         }
 
         public static bool GetVerbose()

@@ -36,12 +36,12 @@ namespace FileAES_Installer
             this.nextButton = new System.Windows.Forms.Button();
             this.backButton = new System.Windows.Forms.Button();
             this.viewPanel = new System.Windows.Forms.Panel();
+            this.errorPanel = new FileAES_Installer.Views.Error();
             this.completedPanel = new FileAES_Installer.Views.Completed();
             this.installPanel = new FileAES_Installer.Views.Install();
             this.optionsPanel = new FileAES_Installer.Views.Options();
             this.welcomePanel = new FileAES_Installer.Views.Welcome();
             this.licencePanel = new FileAES_Installer.Views.Licence();
-            this.errorPanel = new FileAES_Installer.Views.Error();
             this.installerPanel.SuspendLayout();
             this.navPanel.SuspendLayout();
             this.viewPanel.SuspendLayout();
@@ -122,6 +122,14 @@ namespace FileAES_Installer
             this.viewPanel.Size = new System.Drawing.Size(484, 291);
             this.viewPanel.TabIndex = 1;
             // 
+            // errorPanel
+            // 
+            this.errorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.errorPanel.Location = new System.Drawing.Point(0, 0);
+            this.errorPanel.Name = "errorPanel";
+            this.errorPanel.Size = new System.Drawing.Size(484, 291);
+            this.errorPanel.TabIndex = 5;
+            // 
             // completedPanel
             // 
             this.completedPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -161,14 +169,6 @@ namespace FileAES_Installer
             this.licencePanel.Name = "licencePanel";
             this.licencePanel.Size = new System.Drawing.Size(484, 291);
             this.licencePanel.TabIndex = 1;
-            // 
-            // errorPanel
-            // 
-            this.errorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.errorPanel.Location = new System.Drawing.Point(0, 0);
-            this.errorPanel.Name = "errorPanel";
-            this.errorPanel.Size = new System.Drawing.Size(484, 291);
-            this.errorPanel.TabIndex = 5;
             // 
             // Installer
             // 

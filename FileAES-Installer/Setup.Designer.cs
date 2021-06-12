@@ -39,6 +39,7 @@ namespace FileAES_Installer
             this.installButton = new System.Windows.Forms.Button();
             this.uninstallButton = new System.Windows.Forms.Button();
             this.tipLabel = new System.Windows.Forms.Label();
+            this.verLabel = new System.Windows.Forms.Label();
             this.uninstallPanel.SuspendLayout();
             this.detectedToolsGroup.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -48,13 +49,14 @@ namespace FileAES_Installer
             // uninstallPanel
             // 
             this.uninstallPanel.Controls.Add(this.titlePanel);
+            this.uninstallPanel.Controls.Add(this.verLabel);
             this.uninstallPanel.Controls.Add(this.detectedToolsGroup);
             this.uninstallPanel.Controls.Add(this.groupBox1);
             this.uninstallPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uninstallPanel.Location = new System.Drawing.Point(0, 0);
             this.uninstallPanel.Name = "uninstallPanel";
             this.uninstallPanel.Padding = new System.Windows.Forms.Padding(8);
-            this.uninstallPanel.Size = new System.Drawing.Size(484, 311);
+            this.uninstallPanel.Size = new System.Drawing.Size(484, 314);
             this.uninstallPanel.TabIndex = 1;
             // 
             // titlePanel
@@ -62,14 +64,14 @@ namespace FileAES_Installer
             this.titlePanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titlePanel.Location = new System.Drawing.Point(11, 8);
             this.titlePanel.Name = "titlePanel";
-            this.titlePanel.Size = new System.Drawing.Size(461, 54);
+            this.titlePanel.Size = new System.Drawing.Size(461, 37);
             this.titlePanel.TabIndex = 1;
             this.titlePanel.Text = "Welcome to the FileAES Setup";
             // 
             // detectedToolsGroup
             // 
             this.detectedToolsGroup.Controls.Add(this.detectedToolsLabel);
-            this.detectedToolsGroup.Location = new System.Drawing.Point(11, 65);
+            this.detectedToolsGroup.Location = new System.Drawing.Point(11, 71);
             this.detectedToolsGroup.Name = "detectedToolsGroup";
             this.detectedToolsGroup.Size = new System.Drawing.Size(462, 87);
             this.detectedToolsGroup.TabIndex = 2;
@@ -88,7 +90,7 @@ namespace FileAES_Installer
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.optionsPanel);
-            this.groupBox1.Location = new System.Drawing.Point(11, 158);
+            this.groupBox1.Location = new System.Drawing.Point(11, 164);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(462, 139);
             this.groupBox1.TabIndex = 4;
@@ -137,18 +139,26 @@ namespace FileAES_Installer
             this.tipLabel.Text = "Rerun the installer if you need to fix a broken install.";
             this.tipLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // verLabel
+            // 
+            this.verLabel.Location = new System.Drawing.Point(11, 45);
+            this.verLabel.Name = "verLabel";
+            this.verLabel.Size = new System.Drawing.Size(290, 23);
+            this.verLabel.TabIndex = 5;
+            this.verLabel.Text = "v0.0.0";
+            // 
             // Setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 311);
+            this.ClientSize = new System.Drawing.Size(484, 314);
             this.Controls.Add(this.uninstallPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(400, 300);
             this.Name = "Setup";
-            this.Text = "FileAES: Uninstaller";
+            this.Text = "FileAES: Setup";
             this.uninstallPanel.ResumeLayout(false);
             this.detectedToolsGroup.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -168,5 +178,6 @@ namespace FileAES_Installer
         private System.Windows.Forms.Button installButton;
         private System.Windows.Forms.Button uninstallButton;
         private System.Windows.Forms.Label tipLabel;
+        private System.Windows.Forms.Label verLabel;
     }
 }

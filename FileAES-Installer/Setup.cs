@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Net;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace FileAES_Installer
@@ -15,13 +10,12 @@ namespace FileAES_Installer
         public Setup()
         {
             InitializeComponent();
+            verLabel.Text = Program.GetVersion();
 
             Utils.GetSoftwareFilePaths(out List<string> toolNames);
 
-            if (toolNames.Count > 0)
-            {
+            if (toolNames != null && toolNames.Count > 0)
                 detectedToolsLabel.Text = string.Join("\r\n", Utils.ConvertSoftwareNamesToFormatted(toolNames.ToArray()));
-            }
         }
 
         private bool CloseApp(bool close)

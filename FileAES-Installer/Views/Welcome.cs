@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace FileAES_Installer.Views
 {
@@ -9,7 +8,7 @@ namespace FileAES_Installer.Views
         {
             InitializeComponent();
 
-            infoLabel.Text = String.Format("{0}\r\n{1}\r\n\r\nCopyright © mullak99 - 2021", Program.GetVersion(), ShowDebugInfo());
+            infoLabel.Text = $"{Program.GetVersion()}\r\n{ShowDebugInfo()}\r\n\r\nCopyright © mullak99 - 2022";
         }
 
         private string ShowDebugInfo()
@@ -17,10 +16,10 @@ namespace FileAES_Installer.Views
             if (Program.GetVerbose())
             {
                 string returnVal = "\r\n== DEBUG INFO ==\r\n";
-                if (!String.IsNullOrWhiteSpace(Program.GetUpdaterPath()))
-                    returnVal += String.Format("Updater: {0}\r\n", Program.GetUpdaterPath());
+                if (!string.IsNullOrWhiteSpace(Program.GetUpdaterPath()))
+                    returnVal += $"Updater: {Program.GetUpdaterPath()}\r\n";
                 else
-                    returnVal += String.Format("Updater: {0}\r\n", Program.GetUpdaterBranch().ToUpper());
+                    returnVal += $"Updater: {Program.GetUpdaterBranch().ToUpper()}\r\n";
 
                 return returnVal;
             }

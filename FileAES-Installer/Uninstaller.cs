@@ -54,7 +54,7 @@ namespace FileAES_Installer
 
         private bool Uninstall(string updaterPath)
         {
-            if (String.IsNullOrWhiteSpace(updaterPath))
+            if (string.IsNullOrWhiteSpace(updaterPath))
                 updaterPath = Path.Combine(Path.GetTempPath(), "FileAES", "Uninstaller", "FAES-Updater.exe");
 
             bool success = false;
@@ -65,9 +65,7 @@ namespace FileAES_Installer
                     StartInfo =
                     {
                         FileName = updaterPath,
-                        Arguments = String.Format(
-                            "--preserve --uninstall {0} {1}",
-                            GetDeleteUserDataString(), GetVerboseString()),
+                        Arguments = $"--preserve --uninstall {GetDeleteUserDataString()} {GetVerboseString()}",
                         UseShellExecute = false,
                         CreateNoWindow = true,
                         RedirectStandardOutput = true
@@ -130,7 +128,7 @@ namespace FileAES_Installer
 
         private bool DownloadUpdater()
         {
-            string webLink = String.Format("https://api.mullak99.co.uk/FAES/GetDownload.php?app=faes_updater&ver={0}&branch={1}", "latest", Program.GetUpdaterBranch());
+            string webLink = $"https://api.mullak99.co.uk/FAES/GetDownload.php?app=faes_updater&ver={"latest"}&branch={Program.GetUpdaterBranch()}";
 
             string fullPath = Path.Combine(Path.GetTempPath(), "FileAES", "Uninstaller");
 
@@ -142,7 +140,7 @@ namespace FileAES_Installer
                 WebClient webClient = new WebClient();
                 string downloadLink = webClient.DownloadString(new Uri(webLink));
 
-                if (!String.IsNullOrWhiteSpace(downloadLink))
+                if (!string.IsNullOrWhiteSpace(downloadLink))
                 {
                     Directory.CreateDirectory(Path.GetFullPath(fullPath));
 
@@ -170,7 +168,7 @@ namespace FileAES_Installer
 
         private void DeleteUpdater()
         {
-            if (String.IsNullOrWhiteSpace(Program.GetUpdaterPath()))
+            if (string.IsNullOrWhiteSpace(Program.GetUpdaterPath()))
             {
                 try
                 {
@@ -193,7 +191,7 @@ namespace FileAES_Installer
             if (uninstallButton.Text != "Close")
             {
                 string updaterPath = Program.GetUpdaterPath();
-                if ((!String.IsNullOrWhiteSpace(updaterPath) && File.Exists(updaterPath)) || DownloadUpdater())
+                if ((!string.IsNullOrWhiteSpace(updaterPath) && File.Exists(updaterPath)) || DownloadUpdater())
                 {
                     if (Uninstall(updaterPath))
                     {

@@ -121,7 +121,7 @@ namespace FileAES_Installer.Views
                 selected = defaultToolComboBox.SelectedItem.ToString().ToUpper();
             }));
 
-            if (!String.IsNullOrWhiteSpace(selected))
+            if (!string.IsNullOrWhiteSpace(selected))
             {
                 switch (selected)
                 {

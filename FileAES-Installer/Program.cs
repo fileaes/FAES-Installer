@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
@@ -8,7 +7,7 @@ namespace FileAES_Installer
 {
     public static class Program
     {
-        private const string devAppendTag = "DEV210612-1";
+        private const string devAppendTag = "DEV220419-1";
         private const string betaAppendTag = "";
 
         private static bool _verbose;
@@ -26,13 +25,13 @@ namespace FileAES_Installer
                 strippedArg = strippedArg.TrimStart('-', '/', '\\');
 
                 if (strippedArg == "verbose" || strippedArg == "v" ||strippedArg == "debug") _verbose = true;
-                else if ((strippedArg == "faesupdater" || strippedArg == "updater") && args.Length > i + 1 && !String.IsNullOrEmpty(args[i + 1]))
+                else if ((strippedArg == "faesupdater" || strippedArg == "updater") && args.Length > i + 1 && !string.IsNullOrEmpty(args[i + 1]))
                 {
                     _updaterPath = args[i + 1];
                     i++;
                 }
                 else if ((strippedArg == "updaterbranch" || strippedArg == "branch") && args.Length > i + 1 &&
-                         !String.IsNullOrEmpty(args[i + 1]))
+                         !string.IsNullOrEmpty(args[i + 1]))
                 {
                     _updaterBranch = args[i + 1];
                     i++;
@@ -91,12 +90,12 @@ namespace FileAES_Installer
 
         public static bool IsBetaBuild()
         {
-            return !String.IsNullOrWhiteSpace(betaAppendTag);
+            return !string.IsNullOrWhiteSpace(betaAppendTag);
         }
 
         public static bool IsDevBuild()
         {
-            return !String.IsNullOrWhiteSpace(devAppendTag);
+            return !string.IsNullOrWhiteSpace(devAppendTag);
         }
 
         public static string GetVersion()

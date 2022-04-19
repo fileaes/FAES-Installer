@@ -7,7 +7,6 @@ namespace FileAES_Installer.Views
         public Error()
         {
             InitializeComponent();
-
             errorLabel.Text = "";
         }
 

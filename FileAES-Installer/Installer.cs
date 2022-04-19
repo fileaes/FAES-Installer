@@ -198,9 +198,7 @@ namespace FileAES_Installer
 
         private string GetVerboseString()
         {
-            if (Program.GetVerbose())
-                return "--verbose --showinstalled --uver ";
-            return "";
+            return Program.GetVerbose() ? "--verbose --showinstalled --uver " : "";
         }
 
         private bool InstallTools(string updaterPath)
@@ -208,7 +206,7 @@ namespace FileAES_Installer
             List<bool> success = new List<bool>();
             Thread mainInstallThread = new Thread(() =>
             {
-                if (String.IsNullOrWhiteSpace(updaterPath))
+                if (string.IsNullOrWhiteSpace(updaterPath))
                     updaterPath = Path.Combine(Path.GetTempPath(), "FileAES", "Installer", "FAES-Updater.exe");
 
                 string branch = "stable";
@@ -244,10 +242,8 @@ namespace FileAES_Installer
                             StartInfo =
                             {
                                 FileName = updaterPath,
-                                Arguments = String.Format(
-                                    "--directory \"{0}\" --tool faes_gui --preserve --branch {1} --fullinstall {2} {3}",
-                                    path, branch, optionsPanel.CalculateFullInstallParams("FAES_GUI"),
-                                    GetVerboseString()),
+                                Arguments =
+                                    $"--directory \"{path}\" --tool faes_gui --preserve --branch {branch} --fullinstall {optionsPanel.CalculateFullInstallParams("FAES_GUI")} {GetVerboseString()}",
                                 UseShellExecute = false,
                                 CreateNoWindow = true,
                                 RedirectStandardOutput = true
@@ -281,10 +277,8 @@ namespace FileAES_Installer
                             StartInfo =
                             {
                                 FileName = updaterPath,
-                                Arguments = String.Format(
-                                    "--directory \"{0}\" --tool faes_legacy --preserve --branch {1} --fullinstall {2} {3}",
-                                    path, branch, optionsPanel.CalculateFullInstallParams("FAES_LEGACY"),
-                                    GetVerboseString()),
+                                Arguments =
+                                    $"--directory \"{path}\" --tool faes_legacy --preserve --branch {branch} --fullinstall {optionsPanel.CalculateFullInstallParams("FAES_LEGACY")} {GetVerboseString()}",
                                 UseShellExecute = false,
                                 CreateNoWindow = true,
                                 RedirectStandardOutput = true
@@ -318,10 +312,8 @@ namespace FileAES_Installer
                             StartInfo =
                             {
                                 FileName = updaterPath,
-                                Arguments = String.Format(
-                                    "--directory \"{0}\" --tool faes_cli --preserve --branch {1} --fullinstall {2} {3}",
-                                    path, branch, optionsPanel.CalculateFullInstallParams("FAES_CLI"),
-                                    GetVerboseString()),
+                                Arguments =
+                                    $"--directory \"{path}\" --tool faes_cli --preserve --branch {branch} --fullinstall {optionsPanel.CalculateFullInstallParams("FAES_CLI")} {GetVerboseString()}",
                                 UseShellExecute = false,
                                 CreateNoWindow = true,
                                 RedirectStandardOutput = true
@@ -351,8 +343,7 @@ namespace FileAES_Installer
             while (mainInstallThread.IsAlive)
                 Thread.SpinWait(10);
 
-            if (success.Contains(false)) return false;
-            return true;
+            return !success.Contains(false);
         }
 
         private bool HandleExitCode(int updaterExitCode)
@@ -399,7 +390,7 @@ namespace FileAES_Installer
 
         private bool DownloadUpdater()
         {
-            string webLink = String.Format("https://api.mullak99.co.uk/FAES/GetDownload.php?app=faes_updater&ver={0}&branch={1}", "latest", Program.GetUpdaterBranch());
+            string webLink = $"https://api.mullak99.co.uk/FAES/GetDownload.php?app=faes_updater&ver={"latest"}&branch={Program.GetUpdaterBranch()}";
 
             string fullPath = Path.Combine(Path.GetTempPath(), "FileAES", "Installer");
 
@@ -411,7 +402,7 @@ namespace FileAES_Installer
                 WebClient webClient = new WebClient();
                 string downloadLink = webClient.DownloadString(new Uri(webLink));
 
-                if (!String.IsNullOrWhiteSpace(downloadLink))
+                if (!string.IsNullOrWhiteSpace(downloadLink))
                 {
                     Directory.CreateDirectory(Path.GetFullPath(fullPath));
 
@@ -439,7 +430,7 @@ namespace FileAES_Installer
 
         private void DeleteUpdater()
         {
-            if (String.IsNullOrWhiteSpace(Program.GetUpdaterPath()))
+            if (string.IsNullOrWhiteSpace(Program.GetUpdaterPath()))
             {
                 try
                 {
@@ -459,58 +450,62 @@ namespace FileAES_Installer
                 _currentView = 5;
                 UpdateView();
             }
-            else if (_currentView == 3 && nextButton.Text != "Next >")
+            else switch (_currentView)
             {
-                Thread installHandlerThread = new Thread(() =>
+                case 3 when nextButton.Text != "Next >":
                 {
-                    string updaterPath = Program.GetUpdaterPath();
-                    if ((!String.IsNullOrWhiteSpace(updaterPath) && File.Exists(updaterPath)) || DownloadUpdater())
+                    Thread installHandlerThread = new Thread(() =>
                     {
-                        BeginInvoke(new MethodInvoker(() =>
+                        string updaterPath = Program.GetUpdaterPath();
+                        if ((!string.IsNullOrWhiteSpace(updaterPath) && File.Exists(updaterPath)) || DownloadUpdater())
                         {
-                            nextButton.Enabled = false;
-                            backButton.Enabled = false;
-                        }));
-
-                        if (InstallTools(updaterPath))
-                        {
-                            _skipCloseCheck = true;
                             BeginInvoke(new MethodInvoker(() =>
                             {
-                                nextButton.Text = "Next >";
+                                nextButton.Enabled = false;
+                                backButton.Enabled = false;
                             }));
+
+                            if (InstallTools(updaterPath))
+                            {
+                                _skipCloseCheck = true;
+                                BeginInvoke(new MethodInvoker(() =>
+                                {
+                                    nextButton.Text = "Next >";
+                                }));
+                            }
+                            else
+                            {
+                                _skipCloseCheck = true;
+                                BeginInvoke(new MethodInvoker(() =>
+                                {
+                                    nextButton.Text = "Next >";
+                                }));
+                                Error("An installation error occurred!");
+                            }
                         }
                         else
                         {
                             _skipCloseCheck = true;
-                            BeginInvoke(new MethodInvoker(() =>
-                            {
-                                nextButton.Text = "Next >";
-                            }));
-                            Error("An installation error occurred!");
+                            Error("Could not download updater!");
                         }
-                    }
-                    else
-                    {
-                        _skipCloseCheck = true;
-                        Error("Could not download updater!");
-                    }
 
-                    BeginInvoke(new MethodInvoker(() =>
-                    {
-                        nextButton.Enabled = true;
-                        backButton.Enabled = false;
-                    }));
-                });
-                installHandlerThread.Start();
+                        BeginInvoke(new MethodInvoker(() =>
+                        {
+                            nextButton.Enabled = true;
+                            backButton.Enabled = false;
+                        }));
+                    });
+                    installHandlerThread.Start();
+                    break;
+                }
+                case 5:
+                    _currentView = 0;
+                    UpdateView();
+                    break;
+                default:
+                    NextView();
+                    break;
             }
-            else if (_currentView == 5)
-            {
-                _currentView = 0;
-                UpdateView();
-            }
-            else
-                NextView();
         }
 
         private void backButton_Click(object sender, EventArgs e)

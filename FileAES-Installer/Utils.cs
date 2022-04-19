@@ -13,7 +13,7 @@ namespace FileAES_Installer
             try
             {
                 Ping myPing = new Ping();
-                String host = "api.mullak99.co.uk";
+                string host = "api.mullak99.co.uk";
                 byte[] buffer = new byte[32];
                 int timeout = 1000;
                 PingOptions pingOptions = new PingOptions();
@@ -37,7 +37,7 @@ namespace FileAES_Installer
 
                 for (int i = 0; i < toolNames.Count; i++)
                 {
-                    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(String.Format("{0}\\{1}", "Software\\FileAES", toolNames[i])))
+                    using (RegistryKey key = Registry.CurrentUser.OpenSubKey($"{"Software\\FileAES"}\\{toolNames[i]}"))
                     {
                         filePaths[i] = key.GetValue("Path").ToString();
                     }
